@@ -1,0 +1,528 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Italianno&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  --text-main: #f4f0e8;
+  --text-muted: #d1c7b7;
+  --bg-card: rgba(18, 14, 12, 0.92);
+  --border-color: rgba(209, 199, 183, 0.25);
+  --accent-gold: #d4af37;
+  
+  --font-brand: 'Cinzel', serif;
+  --font-script: 'Italianno', cursive;
+  --font-body: 'EB Garamond', serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: #070504; 
+  color: var(--text-main);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+.nerdrum-theme {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   BACKGROUND SLIDESHOW (TRANSITION)
+   ========================================= */
+.bg-slider-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  background-color: #070504;
+}
+
+.bg-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+  filter: brightness(0.70) contrast(1.1);
+}
+
+.bg-slide.active {
+  opacity: 1;
+}
+
+.bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(10, 8, 7, 0.2) 0%, rgba(5, 4, 3, 0.95) 100%);
+  backdrop-filter: blur(2px);
+  z-index: 2;
+}
+
+/* =========================================
+   HERO LANDING PAGE E SITE MAIN
+   ========================================= */
+.site-wrapper, .landing-hero {
+  position: relative;
+  z-index: 10;
+}
+
+.landing-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.lang-toggle-hero {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-family: var(--font-brand);
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.lang-toggle-hero:hover {
+  color: var(--text-main);
+  border-color: var(--accent-gold);
+}
+
+.hero-content {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.hero-subtitle {
+  font-family: var(--font-brand);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 5px;
+  color: var(--text-muted);
+}
+
+.hero-artist-name {
+  /* Substitua a linha do font-family por esta: */
+  font-family: 'Cinzel', serif;
+  
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+  font-weight: 200;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--text-main);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.hero-manifesto {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 650px;
+}
+
+.enter-works-btn {
+  margin-top: 1.5rem;
+  background: transparent;
+  border: 1px solid var(--accent-gold);
+  color: var(--text-main);
+  font-family: var(--font-brand);
+  font-size: 1rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+}
+
+.enter-works-btn:hover {
+  background: var(--accent-gold);
+  color: #070504;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   HEADER & NAVIGATION COM EFEITO SCROLL
+   ========================================= */
+.site-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Adicionado transições para o recolhimento ser suave */
+.site-header, .header-container, .artist-title, .brand .subtitle, .instagram-handle, .header-top-actions, .nav-menu button {
+  transition: all 0.3s ease;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  background: rgba(7, 5, 4, 0.92);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* CLASSE ATIVADA PELO SCROLL */
+.site-header.scrolled {
+  padding: 0.5rem; 
+  background: rgba(7, 5, 4, 0.98); 
+}
+.site-header.scrolled .header-container { gap: 0.2rem; }
+.site-header.scrolled .artist-title { font-size: 1.5rem; letter-spacing: 2px; }
+.site-header.scrolled .nav-menu { gap: 1rem; }
+.site-header.scrolled .nav-menu button { font-size: 0.75rem; }
+.site-header.scrolled .brand .subtitle,
+.site-header.scrolled .instagram-handle,
+.site-header.scrolled .header-top-actions { display: none; }
+
+.header-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-top-actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lang-toggle {
+  background: none;
+  border: none;
+  font-family: var(--font-brand);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.lang-toggle:hover {
+  color: var(--accent-gold);
+}
+
+.brand { text-align: center; cursor: pointer; }
+.brand .subtitle {
+  font-family: var(--font-brand);
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  color: var(--text-muted);
+  display: block;
+}
+
+.artist-title {
+  font-family: var(--font-brand);
+  font-size: 2.2rem;
+  font-weight: 600;
+  letter-spacing: 4px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.instagram-handle {
+  font-family: var(--font-brand);
+  font-size: 0.85rem;
+  color: var(--accent-gold);
+  letter-spacing: 2px;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.nav-menu button {
+  background: none;
+  border: none;
+  font-family: var(--font-brand);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+.nav-menu button:hover, .nav-menu button.active {
+  color: var(--text-main);
+  border-bottom: 2px solid var(--accent-gold);
+}
+
+/* =========================================
+   MAIN CONTENT & CONTAINERS
+   ========================================= */
+.site-main {
+  flex: 1;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.section-header { text-align: center; margin-bottom: 3rem; }
+.section-header h2 {
+  font-family: var(--font-brand);
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.section-sub { color: var(--text-muted); font-size: 1.05rem; font-style: italic; }
+
+.content-container {
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: 1.15rem;
+  background: var(--bg-card);
+  padding: 2.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.content-container h2 {
+  font-family: var(--font-brand);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 1.5rem;
+  margin-top: 0;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.text-center { text-align: center; }
+.justify-center { justify-content: center; }
+
+/* =========================================
+   CLASSES / AULAS SPECIFIC
+   ========================================= */
+.classes-main-desc {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+.classes-info-box {
+  background: rgba(0,0,0,0.3);
+  padding: 1.5rem;
+  border-radius: 4px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  margin-bottom: 2rem;
+}
+.highlight-text {
+  font-family: var(--font-brand);
+  color: var(--accent-gold);
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+.classes-cta {
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  color: var(--text-muted);
+}
+
+/* =========================================
+   CONTACT SPECIFIC
+   ========================================= */
+.contact-details p { margin: 1rem 0; }
+.contact-details a { color: var(--accent-gold); text-decoration: none; font-weight: 500; transition: opacity 0.2s; }
+.contact-details a:hover { opacity: 0.8; }
+
+/* =========================================
+   GALLERY GRID (OBRAS)
+   ========================================= */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+}
+.work-card {
+  cursor: pointer;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 1rem;
+  transition: all 0.35s ease;
+}
+.work-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent-gold);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+.image-wrapper {
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background-color: #1a1614;
+  margin-bottom: 1rem;
+}
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.work-card:hover .image-wrapper img { transform: scale(1.04); }
+.work-details h3 { font-family: var(--font-brand); font-size: 1.1rem; margin: 0 0 0.35rem 0; }
+.work-details .meta { font-size: 0.9rem; color: var(--text-muted); margin: 0 0 0.2rem 0; }
+.work-details .dimensions { font-size: 0.85rem; color: #a39888; margin: 0 0 0.4rem 0; }
+.work-details .price { font-family: var(--font-brand); font-size: 0.95rem; color: var(--accent-gold); font-weight: 600; margin: 0; }
+
+/* =========================================
+   BUTTONS & PDF
+   ========================================= */
+.catalog-actions { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.pdf-btn {
+  display: flex;
+  padding: 0.75rem 1.5rem;
+  justify-content: center; 
+  background: var(--accent-gold);
+  color: #0d0b0a;
+  text-decoration: none;
+  font-family: var(--font-brand);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.pdf-btn.secondary {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+.pdf-btn:hover { transform: scale(1.02); }
+.pdf-viewer-wrapper { width: 100%; height: 75vh; min-height: 600px; border: 1px solid var(--border-color); }
+.pdf-object { width: 100%; height: 100%; border: none; }
+
+/* =========================================
+   MODAL & ARTZOOM
+   ========================================= */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 2rem;
+}
+.modal-content {
+  position: relative; max-width: 900px; width: 100%; max-height: 95vh;
+  background: #14110f; border: 1px solid var(--border-color); padding: 1.5rem;
+  display: flex; flex-direction: column; align-items: center;
+  border-radius: 4px;
+}
+
+/* Lupa / ArtZoom Styles */
+.art-zoom-container {
+  width: 100%;
+  height: 65vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  cursor: zoom-in;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.art-zoom-container.zoomed {
+  cursor: zoom-out;
+}
+
+.art-zoom-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease-out; /* Transição macia ao dar zoom in/out */
+  transform-origin: center center;
+}
+
+.art-zoom-container.zoomed .art-zoom-img {
+  transform: scale(3.5); /* Aumenta a foto 3x para ver os detalhes minuciosos */
+}
+
+.zoom-hint {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: rgba(0,0,0,0.7);
+  color: var(--text-main);
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  pointer-events: none;
+  font-family: var(--font-brand);
+  letter-spacing: 2px;
+  border: 1px solid var(--border-color);
+  animation: fadeIn 1s ease 1s both;
+}
+
+.modal-info { text-align: center; margin-top: 1.5rem; }
+.modal-info h2 { font-family: var(--font-brand); font-size: 1.4rem; margin: 0 0 0.3rem 0; letter-spacing: 1px;}
+.modal-price { color: var(--accent-gold); font-family: var(--font-brand); font-weight: 600; margin-top: 0.5rem; }
+.close-btn { position: absolute; top: -40px; right: 0px; background: none; border: none; font-size: 2rem; color: var(--text-main); cursor: pointer; transition: color 0.3s; }
+.close-btn:hover { color: var(--accent-gold); }
+
+/* =========================================
+   FOOTER & ANIMATIONS
+   ========================================= */
+.site-footer {
+  border-top: 1px solid var(--border-color); padding: 2rem 1.5rem;
+  text-align: center; font-family: var(--font-brand); font-size: 0.75rem;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);
+  background: rgba(7, 5, 4, 0.95);
+}
+.fade-in { animation: fadeIn 0.8s ease forwards; }
+.slide-up { animation: slideUp 0.6s ease forwards; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; } }
+
+/* =========================================
+   RESPONSIVIDADE (MOBILE & TABLET)
+   ========================================= */
+@media (max-width: 768px) {
+  .site-header { padding: 1rem; }
+  .artist-title { font-size: 1.6rem; }
+  .nav-menu { gap: 0.8rem; }
+  .nav-menu button { font-size: 0.75rem; letter-spacing: 1px; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .content-container { padding: 1.5rem; }
+  .catalog-actions { flex-direction: column; width: 100%; }
+  .pdf-btn { width: 100%; text-align: center; }
+  .lang-toggle-hero { top: 1rem; right: 1rem; }
+  .art-zoom-container { height: 50vh; }
+}
