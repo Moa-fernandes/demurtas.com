@@ -549,7 +549,18 @@ function App() {
       <footer className={`site-footer ${!hasEntered ? 'on-landing' : ''}`}>
         <div className="footer-container">
           <p className="footer-copy">© {new Date().getFullYear()} Nikolas de Murtas. {t.rights}</p>
-          <p className="footer-credit">{t.siteBy} Moacir Fernandes</p>
+          <p className="footer-credit">
+            {t.siteBy}{' '}
+            <span className="dev-wrapper">
+              Moacir Fernandes
+              <div className="dev-tooltip">
+                <a href="https://wa.me/5521973019585" target="_blank" rel="noreferrer">WhatsApp</a>
+                <a href="https://www.linkedin.com/in/moacir-fernandes-ba0a97a0/" target="_blank" rel="noreferrer">LinkedIn</a>
+                <a href="https://github.com/Moa-fernandes" target="_blank" rel="noreferrer">GitHub</a>
+                <a href="https://moa-fernandes.github.io/gps-radio-radar/" target="_blank" rel="noreferrer">Conheça</a>
+              </div>
+            </span>
+          </p>
         </div>
       </footer>
     </div>
