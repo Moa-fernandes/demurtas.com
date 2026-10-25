@@ -1,75 +1,78 @@
-# React + TypeScript + Vite
+# 🎨 Nikolas de Murtas | Official Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![en](https://img.shields.io/badge/lang-en-red.svg)](#english) [![pt](https://img.shields.io/badge/lang-pt-green.svg)](#português)
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## <a name="english"></a> 🇬🇧 English
 
-## React Compiler
+Official portfolio and website for the Brazilian painter Nikolas de Murtas. Designed to provide an immersive artistic experience, the application features an ambient audio player, dynamic background slideshows, and a highly interactive art gallery with a custom zoom engine.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### ✨ Features
+- **Bilingual System:** Seamless toggling between English (EN-US) and Portuguese (PT-BR) state.
+- **Immersive Environment:** Persistent background audio player (Sofiane Pamart - Paris) with volume control and marquee display.
+- **Dynamic Gallery & ArtZoom:** Interactive catalog with a custom-built zoom feature (click-to-zoom and mouse tracking) for examining painting details.
+- **Integrated PDF Viewer:** Embedded 2025 art catalog viewing and download capabilities.
+- **Responsive Design:** Scroll-aware sticky header and fully mobile-optimized layout.
 
-## Expanding the ESLint configuration
+### 🚀 Tech Stack
+- **React 18** (Functional Components, Hooks, Refs)
+- **TypeScript** (Strict typing for catalog works and class media interfaces)
+- **Vite** (Build tool)
+- **Custom CSS3** (Keyframe animations, CSS variables, responsive grids, Backdrop Filters)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🛠️ Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+# Clone the repository
+gh repo clone Moa-fernandes/demurtas.com
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Navigate to the project directory
+cd demurtas.com
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Install dependencies
+npm install
 
-```
+# Start the development server
+npm run dev
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---------------------------
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Portfólio e site oficial do pintor brasileiro Nikolas de Murtas. Projetado para proporcionar uma experiência artística imersiva, a aplicação conta com um reprodutor de áudio ambiente, slideshow dinâmico no fundo e uma galeria de arte altamente interativa com um motor de zoom personalizado.
 
-```
+✨ Funcionalidades
+Sistema Bilíngue: Alternância fluida de estado entre Inglês (EN-US) e Português (PT-BR).
+
+Ambiente Imersivo: Reprodutor de áudio de fundo persistente (Sofiane Pamart - Paris) com controle de volume e display em letreiro animado (marquee).
+
+Galeria Dinâmica e ArtZoom: Catálogo interativo com recurso de zoom construído sob medida (clique para ampliar e rastreamento de posição do cursor) para examinar detalhes das pinturas a óleo.
+
+Visualizador de PDF Integrado: Visualização e download do catálogo de obras de 2025 incorporado diretamente na interface.
+
+Design Responsivo: Cabeçalho adaptativo ao scroll (sticky) e layout totalmente otimizado para dispositivos móveis.
+
+🚀 Tecnologias Utilizadas
+React 18 (Componentes Funcionais, Hooks, Refs)
+
+TypeScript (Tipagem estrita para o catálogo e mídias)
+
+Vite (Ferramenta de build)
+
+CSS3 Personalizado (Animações via keyframes, variáveis CSS, grids responsivos, Backdrop Filters)
+
+# Clonar o repositório
+gh repo clone Moa-fernandes/demurtas.com
+
+# Acessar o diretório do projeto
+cd demurtas.com
+
+# Instalar as dependências
+npm install
+
+# Iniciar o servidor de desenvolvimento
+npm run dev
+
+Developed by Moacir Fernandes
+
+
