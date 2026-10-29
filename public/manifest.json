@@ -1,0 +1,15 @@
+{
+  "name": "Nikolas de Murtas",
+  "short_name": "De Murtas",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070504",
+  "theme_color": "#070504",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

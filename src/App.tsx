@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
+import { LazyImage } from './components/LazyImage'
 
 interface Work {
   id: number
@@ -11,48 +12,22 @@ interface Work {
 }
 
 const CATALOG_WORKS: Work[] = [
-  { id: 1, title: 'Do Limbo', year: '2025', technique: 'Óleo sobre tela', dimensions: '68x59 cm',  imageUrl: '/photos/doLimbo.jpg' },
-  { id: 2, title: 'Irmã Morte', year: '2024', technique: 'Óleo sobre tela', dimensions: '70x90 cm',  imageUrl: '/photos/IrmaMorte.png' },
+  { id: 1, title: 'Do limbo', year: '2025', technique: 'Óleo sobre tela', dimensions: '68x59 cm',  imageUrl: '/photos/doLimbo.jpg' },
+  { id: 2, title: 'Irmã morte', year: '2024', technique: 'Óleo sobre tela', dimensions: '70x90 cm',  imageUrl: '/photos/IrmaMorte.png' },
   { id: 3, title: 'Em um lugar distante', year: '2025', technique: 'Óleo sobre tela', dimensions: '85x85 cm',  imageUrl: '/photos/obra2.jpeg' },
-  { id: 4, title: 'Autoretrato', year: '2025', technique: 'Óleo sobre tela', dimensions: 'TBD', imageUrl: '/photos/autoretrato.png' },
-  { id: 5, title: 'Autoretrato 2', year: '2025', technique: 'Óleo sobre tela', dimensions: 'TBD', imageUrl: '/photos/autoretrato2.png' },
-  { id: 6, title: 'Contador de Estórias', year: '2025', technique: 'Óleo sobre tela', dimensions: 'TBD', imageUrl: '/photos/obra1.jpeg' },
-  { id: 7, title: 'Autoretrato 3', year: '2025', technique: 'Óleo sobre tela', dimensions: 'TBD', imageUrl: '/photos/autoretrato3.png' },
-  { id: 8, title: 'Autoretrato 4', year: '2025', technique: 'Óleo sobre tela', dimensions: 'TBD', imageUrl: '/photos/autoretrato4.png' },
-  { id: 9, title: 'Em um lugar distante (PNG)', year: '2025', technique: 'Óleo sobre tela', dimensions: 'TBD', imageUrl: '/photos/Emumlugardistante.png' },
-  { id: 10, title: 'Na Atividade', year: '2025', technique: 'Óleo sobre tela', dimensions: 'TBD', imageUrl: '/photos/naatividade.png' },
-  { id: 11, title: 'Uma Pausa pro Respiro', year: '2025', technique: 'Óleo sobre tela', dimensions: 'TBD', imageUrl: '/photos/umapausaprorespiro.png' }
+  { id: 4, title: 'Autoretrato', year: '2025', technique: 'Óleo sobre tela', dimensions: '37x47 cm', imageUrl: '/photos/autoretrato.png' },
+  { id: 5, title: 'Autoretrato 2', year: '2025', technique: 'Óleo sobre tela', dimensions: '46x49 cm', imageUrl: '/photos/autoretrato2.png' },
+  { id: 6, title: 'Contador de estórias', year: '2025', technique: 'Óleo sobre tela', dimensions: '50x40 cm', imageUrl: '/photos/obra1.jpeg' },
+  { id: 7, title: 'Autoretrato 3', year: '2025', technique: 'Óleo sobre tela', dimensions: '38x45 cm', imageUrl: '/photos/autoretrato3.png' },
+  { id: 8, title: 'Autoretrato 4', year: '2025', technique: 'Óleo sobre tela', dimensions: '42x40 cm', imageUrl: '/photos/autoretrato4.png' },
+  { id: 9, title: 'Em um lugar distante', year: '2025', technique: 'Óleo sobre tela', dimensions: '85x85 cm', imageUrl: '/photos/Emumlugardistante.png' },
+  { id: 10, title: 'Na atividade', year: '2025', technique: 'Óleo sobre tela', dimensions: '50x65 cm', imageUrl: '/photos/naatividade.png' },
+  { id: 11, title: 'Uma pausa pro respiro', year: '2025', technique: 'Óleo sobre tela', dimensions: '35x43 cm', imageUrl: '/photos/umapausaprorespiro.png' }
 ]
 
 const BACKGROUND_IMAGES = CATALOG_WORKS.map(work => work.imageUrl)
-
-/* Caminho do MP3 Local */
 const AUDIO_SRC = '/mp3/Paris.mp3'
 
-interface ClassMedia {
-  id: number
-  type: 'image' | 'video'
-  url: string
-  caption?: { en: string; pt: string }
-}
-
-const CLASS_MEDIA: ClassMedia[] = [
-  { id: 1, type: 'image', url: '', caption: { en: 'Atelier', pt: 'Ateliê' } },
-  { id: 2, type: 'video', url: '', caption: { en: 'Class in action', pt: 'Aula em andamento' } },
-  { id: 3, type: 'image', url: '', caption: { en: 'Student work', pt: 'Trabalho de aluno' } },
-  { id: 4, type: 'video', url: '', caption: { en: 'Technique demo', pt: 'Demonstração de técnica' } }
-]
-
-function getVideoSource(url: string): { kind: 'iframe' | 'file'; src: string } {
-  const yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/)
-  if (yt) return { kind: 'iframe', src: `https://www.youtube.com/embed/${yt[1]}` }
-  const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)
-  if (vimeo) return { kind: 'iframe', src: `https://player.vimeo.com/video/${vimeo[1]}` }
-  if (/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)) return { kind: 'file', src: url }
-  return { kind: 'iframe', src: url }
-}
-
-/* ÍCONES SVG */
 const iconProps = { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true }
 const MailIcon = () => (
   <svg {...iconProps}><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
@@ -62,12 +37,6 @@ const InstagramIcon = () => (
 )
 const WhatsAppIcon = () => (
   <svg {...iconProps}><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" /><g transform="translate(7.6 7.6) scale(0.4)"><path strokeWidth={3.4} d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></g></svg>
-)
-const ImageIcon = () => (
-  <svg {...iconProps}><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21" /></svg>
-)
-const VideoIcon = () => (
-  <svg {...iconProps}><rect x="2" y="5" width="14" height="14" rx="2" /><path d="m22 8-6 4 6 4V8Z" /></svg>
 )
 const PlayIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z" /></svg>
@@ -92,21 +61,27 @@ const TRANSLATIONS = {
     btnEnter: 'Enter the works →',
     worksTitle: 'Selected Works & Paintings',
     worksSub: 'Classical tradition, figurative depth, and contemporary urban culture.',
+    filterAll: 'All',
+    sortNewest: 'Newest First',
+    sortOldest: 'Oldest First',
     bioTitle: 'About the Artist',
-    bioP1: 'Nikolas de Murtas, born in 1990 in Rio de Janeiro, began his painting career over 10 years ago. Surrounded by art since childhood, he discovered his passion and desire to paint like the great masters.',
-    bioP2: 'He began his studies with master Renato Ferrari in Rio de Janeiro and took classes with Caique Polizeli, where he was introduced to the techniques of Odd Nerdrum, a great Norwegian master.',
-    bioP3: 'He learned the importance of painting from life and creating narratives. In his works, he strives to portray the reality of the streets and incorporate his lifestyle.',
-    bioP4: 'He participated in the Piracicaba and Arceburgo Salons, receiving an honorable mention and an acquisition prize. Nikolas has worked for brands such as Vans and High, and music artists such as BK, Sain, and Bin.',
+    bioP1: 'Born in Rio de Janeiro in 1990, Nikolas de Murtas grew up surrounded by art. Coming from a family of painters and sculptors—with a mother who is a visual artist and restorer boasting a rich intellectual and artistic background—he discovered early on a deep desire to paint like the old masters.',
+    bioP2: 'His painting journey began over a decade ago. He studied under master Renato Ferrari in Rio de Janeiro and took classes with Caique Polizeli, where he was introduced to the techniques of Norwegian master Odd Nerdrum. This connection deepened in April 2026, when Nikolas traveled to Norway and spent two months immersed in living, studying, and breathing the thoughts and "Kitsch" philosophy directly alongside Odd Nerdrum himself—embracing craftsmanship, raw emotion, and dramatic narrative.',
+    bioP3: 'He joined the artist team for the Netflix series "Dom de Iludir", where he executed—among paintings of his own signature and creation—copies and replicas of iconic works of national art, such as Pierrette (1922) and Samba, both by Di Cavalcanti, as well as Enterro na Rede (1944), from Cândido Portinari’s acclaimed series Os Retirantes.',
+    bioP4: 'A recipient of an honorable mention and an acquisition prize at the Piracicaba and Arceburgo Salons, he has also created works for brands such as Vans and High, and for musical artists like BK, Sain, and Bin.',
     catTitle: 'Complete Catalog 2025',
     catDesc: 'View or download the official catalog of Nikolas de Murtas.',
     catOpen: 'Open Full Screen ↗',
-    catDown: 'Download PDF ⬇',
-    classesTitle: 'Painting Classes',
-    classesDesc: 'Learn oil painting techniques inspired by the great classical masters. The classes focus on painting from life, anatomical proportion, classical canvas preparation, and narrative creation based on Odd Nerdrum’s philosophy.',
+    classesTitle: 'Classes',
+    classesDrawingTitle: 'Introduction to drawing:',
+    classesDrawingItem1: 'Fundamentals of drawing',
+    classesDrawingItem2: 'Charcoal drawing',
+    classesPaintingTitle: 'Introduction to painting:',
+    classesPaintingItem1: 'Fundamentals of oil painting',
+    classesPaintingItem2: 'Study of classical paintings by the great masters.',
     classesLoc: 'Location: Copacabana, Rio de Janeiro - RJ',
-    classesDays: 'Available Days: Tuesdays and Thursdays (Morning/Afternoon) & Saturdays.',
+    classesDays: 'Available Days: Tuesdays and Fridays 10h - 13h.',
     classesCTA: 'Contact to check availability and schedule your class.',
-    mediaSoon: 'Coming soon',
     contactTitle: 'Contact & Acquisition',
     contactDesc: 'For catalog availability, commissions, or atelier information:',
     rights: 'All rights reserved.',
@@ -124,21 +99,27 @@ const TRANSLATIONS = {
     btnEnter: 'Entrar nas obras →',
     worksTitle: 'Obras Selecionadas',
     worksSub: 'Tradição clássica, figurativismo e cultura urbana contemporânea.',
+    filterAll: 'Todas',
+    sortNewest: 'Mais Recentes',
+    sortOldest: 'Mais Antigas',
     bioTitle: 'Sobre o Artista',
-    bioP1: 'Nikolas de Murtas, nascido em 1990 no Rio de Janeiro, iniciou sua trajetória na pintura há mais de 10 anos. Cercado pela arte desde pequeno, descobriu sua paixão e a vontade de pintar como os grandes mestres.',
-    bioP2: 'Iniciou seus estudos com o mestre Renato Ferrari no Rio de Janeiro e teve aulas com Caique Polizeli, onde foi introduzido às técnicas de Odd Nerdrum, grande mestre norueguês.',
-    bioP3: 'Aprendeu a importância de se pintar do natural e da criação de narrativas. Em suas obras, tenta retratar a realidade das ruas e incorporar o seu estilo de vida.',
-    bioP4: 'Participou dos Salões de Piracicaba e Arceburgo, sendo em Piracicaba premiado com menção honrosa e prêmio aquisitivo pela Câmara. Nikolas já realizou trabalhos para marcas como Vans e High, e para artistas do rap e da música brasileira como BK, Sain e Bin.',
+    bioP1: 'Nascido em 1990 no Rio de Janeiro, Nikolas de Murtas cresceu em meio à arte. Filho de uma artista plástica e restauradora, ele teve a criação moldada por essa herança de pintores e escultores, descobrindo desde cedo a vontade de pintar como os grandes mestres.',
+    bioP2: 'Sua trajetória na pintura começou há mais de 10 anos. Iniciou os estudos com o mestre Renato Ferrari no Rio de Janeiro e depois conheceu um pupilo de Odd Nerdrum, onde conheceu as técnicas do renomado mestre norueguês. Essa conexão se aprofundou em abril de 2026, quando Nikolas viajou à Noruega e passou dois meses imerso vivendo, estudando e respirando os pensamentos e a filosofia "Kitsch" diretamente com o próprio Odd Nerdrum — abraçando o resgate do ofício, da emoção crua e da narrativa dramática.',
+    bioP3: 'Integrou o time de artistas da série "Dom de Iludir", da Netflix, onde executou — dentre quadros de sua própria assinatura e criação — cópias e réplicas de obras icônicas da arte nacional, como Pierrette (1922) e Samba, ambas de Di Cavalcanti, além de Enterro na Rede (1944), da série Os Retirantes de Cândido Portinari.',
+    bioP4: 'Premiado com menção honrosa e prêmio aquisitivo nos Salões de Piracicaba e Arceburgo, realizou trabalhos para marcas como Vans e High, e para artistas como BK, Sain e Bin.',
     catTitle: 'Catálogo Completo 2025',
     catDesc: 'Visualize o catálogo oficial das obras de Nikolas de Murtas.',
     catOpen: 'Abrir PDF em tela cheia ↗',
-    catDown: 'Baixar PDF ⬇',
-    classesTitle: 'Aulas de Pintura a Óleo',
-    classesDesc: 'Aprenda as técnicas da pintura a óleo inspiradas nos grandes mestres. As aulas focam na pintura do natural, proporção, preparação clássica de telas e criação de narrativas com base na filosofia de Odd Nerdrum.',
+    classesTitle: 'Aulas',
+    classesDrawingTitle: 'Introdução ao desenho:',
+    classesDrawingItem1: 'Fundamentos do desenho',
+    classesDrawingItem2: 'Desenho com carvão',
+    classesPaintingTitle: 'Introdução à pintura:',
+    classesPaintingItem1: 'Fundamentos da pintura a óleo',
+    classesPaintingItem2: 'Estudo de pinturas clássicas dos grandes mestres.',
     classesLoc: 'Local: Copacabana, Rio de Janeiro - RJ',
-    classesDays: 'Dias disponíveis: Terças e Quintas (Manhã/Tarde) e Sábados.',
+    classesDays: 'Dias disponíveis: Terças e Sextas de 10h às 13h.',
     classesCTA: 'Entre em contato para verificar horários disponíveis.',
-    mediaSoon: 'Em breve',
     contactTitle: 'Contato & Aquisição',
     contactDesc: 'Para disponibilidade de obras, encomendas ou informações de atelier:',
     rights: 'Todos os direitos reservados.',
@@ -150,27 +131,115 @@ type Tab = 'works' | 'bio' | 'catalog' | 'classes' | 'contact'
 
 function App() {
   const [lang, setLang] = useState<'en' | 'pt'>('en')
-  const [hasEntered, setHasEntered] = useState<boolean>(false)
-  const [activeTab, setActiveTab] = useState<Tab>('works')
-  const [selectedWork, setSelectedWork] = useState<Work | null>(null)
+  const [hasEntered, setHasEntered] = useState<boolean>(() => {
+    return window.location.hash.length > 1;
+  })
+  
+  // Sincronização inicial com a URL (Deep Linking)
+  const [activeTab, setActiveTab] = useState<Tab>(() => {
+    const hash = window.location.hash.replace('#', '').split('?')[0];
+    if (['works', 'bio', 'catalog', 'classes', 'contact'].includes(hash)) {
+      return hash as Tab;
+    }
+    return 'works';
+  })
+
+  const [selectedWorkId, setSelectedWorkId] = useState<number | null>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const obraParam = params.get('obra');
+    if (obraParam) {
+      const found = CATALOG_WORKS.find(w => w.title.toLowerCase().replace(/\s+/g, '-') === obraParam);
+      return found ? found.id : null;
+    }
+    return null;
+  })
+
   const [bgIndex, setBgIndex] = useState(0)
-
-  // Header Scroll State
+  const [selectedYear, setSelectedYear] = useState<string>('all')
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest')
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false)
 
-  // ArtZoom State & Ref
   const [isZoomed, setIsZoomed] = useState(false)
   const imgRef = useRef<HTMLImageElement>(null)
 
-  // Player States
   const [isPlaying, setIsPlaying] = useState(false)
   const [volume, setVolume] = useState(0.5)
   const audioRef = useRef<HTMLAudioElement>(null)
+  const bgContainerRef = useRef<HTMLDivElement>(null)
+
+  const lastScrollY = useRef(0)
+  const touchStartX = useRef<number>(0)
+  const touchEndX = useRef<number>(0)
 
   const t = TRANSLATIONS[lang]
   const pdfCatalogPath = '/photos/catalogos/catalogo-nikolas-2025.pdf'
 
-  // Slider Effect
+  // Sistema de Som Nativo (Web Audio API para micro-cliques)
+  const playClickSound = () => {
+    try {
+      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(440, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.03, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.05);
+    } catch (e) {
+      // Ignora se o navegador bloquear sem interação prévia
+    }
+  };
+
+  // Efeito Parallax ao mover o mouse
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!bgContainerRef.current) return;
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      bgContainerRef.current.style.transform = `translate(calc(-2.5vw + ${x}px), calc(-2.5vh + ${y}px))`;
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Sincronização de Estado com a URL (Deep Linking)
+  useEffect(() => {
+    if (!hasEntered) {
+      window.location.hash = '';
+      return;
+    }
+    const workObj = CATALOG_WORKS.find(w => w.id === selectedWorkId);
+    const obraSlug = workObj ? `?obra=${workObj.title.toLowerCase().replace(/\s+/g, '-')}` : '';
+    window.location.hash = `#${activeTab}${obraSlug}`;
+  }, [activeTab, selectedWorkId, hasEntered]);
+
+  const filteredWorks = CATALOG_WORKS.filter(work => {
+    if (selectedYear === 'all') return true
+    return work.year === selectedYear
+  }).sort((a, b) => {
+    if (sortOrder === 'newest') return parseInt(b.year) - parseInt(a.year)
+    return parseInt(a.year) - parseInt(b.year)
+  })
+
+  const selectedWork = CATALOG_WORKS.find(w => w.id === selectedWorkId) || null
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedWorkId) {
+        if (e.key === 'Escape') handleCloseModal()
+        if (e.key === 'ArrowRight') handleNextWork()
+        if (e.key === 'ArrowLeft') handlePrevWork()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedWorkId, filteredWorks])
+
   useEffect(() => {
     const interval = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length)
@@ -178,12 +247,18 @@ function App() {
     return () => clearInterval(interval)
   }, [])
 
-  // Scroll Header Effect
+  // Zen Mode (Esconder header ao rolar para baixo)
   useEffect(() => {
     let ticking = false
     const update = () => {
       const y = window.scrollY
-      setIsScrolled((prev) => (prev ? y > 40 : y > 200))
+      setIsScrolled(y > 150)
+      if (y > lastScrollY.current && y > 300) {
+        setIsHeaderHidden(true)
+      } else {
+        setIsHeaderHidden(false)
+      }
+      lastScrollY.current = y
       ticking = false
     }
     const handleScroll = () => {
@@ -201,15 +276,13 @@ function App() {
     setIsScrolled(false)
   }, [activeTab, hasEntered])
 
-  // Player Initialization (Autoplay na inicialização global)
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
-      // Tentativa de Autoplay
       audioRef.current.play().then(() => {
         setIsPlaying(true);
       }).catch((e) => {
-        console.warn("Autoplay bloqueado pelo navegador. O áudio será ativado no primeiro clique.", e);
+        console.warn("Autoplay bloqueado pelo navegador.", e);
         setIsPlaying(false);
       });
     }
@@ -220,6 +293,7 @@ function App() {
   }, [volume])
 
   const togglePlayAudio = () => {
+    playClickSound();
     if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
@@ -234,25 +308,63 @@ function App() {
     }
   }
 
-  // Função para lidar com o clique no botão "Entrar nas Obras"
   const handleEnterSite = () => {
+    playClickSound();
     setHasEntered(true)
     setActiveTab('works')
-    // Força o play caso o navegador tenha bloqueado no carregamento inicial
     if (audioRef.current && !isPlaying) {
       audioRef.current.play()
         .then(() => setIsPlaying(true))
-        .catch(() => console.log("O áudio ainda requer permissão."));
+        .catch(() => console.log("Áudio aguardando permissão."));
     }
   }
 
   const toggleLanguage = () => {
+    playClickSound();
     setLang(lang === 'en' ? 'pt' : 'en')
   }
 
   const handleCloseModal = () => {
-    setSelectedWork(null)
+    playClickSound();
+    setSelectedWorkId(null)
     setIsZoomed(false)
+  }
+
+  const handleNextWork = () => {
+    playClickSound();
+    if (!selectedWorkId) return
+    const currentIndex = filteredWorks.findIndex(w => w.id === selectedWorkId)
+    const nextIndex = (currentIndex + 1) % filteredWorks.length
+    setSelectedWorkId(filteredWorks[nextIndex].id)
+    setIsZoomed(false)
+  }
+
+  const handlePrevWork = () => {
+    playClickSound();
+    if (!selectedWorkId) return
+    const currentIndex = filteredWorks.findIndex(w => w.id === selectedWorkId)
+    const prevIndex = (currentIndex - 1 + filteredWorks.length) % filteredWorks.length
+    setSelectedWorkId(filteredWorks[prevIndex].id)
+    setIsZoomed(false)
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    if (!isZoomed) {
+      if (touchStartX.current - touchEndX.current > 75) {
+        handleNextWork()
+      }
+      if (touchEndX.current - touchStartX.current > 75) {
+        handlePrevWork()
+      }
+    }
   }
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -264,45 +376,14 @@ function App() {
     }
   }
 
-  const renderClassMedia = (item: ClassMedia) => {
-    const caption = item.caption ? item.caption[lang] : ''
-    let content
-    if (!item.url.trim()) {
-      content = (
-        <div className="media-placeholder">
-          {item.type === 'image' ? <ImageIcon /> : <VideoIcon />}
-          <span>{t.mediaSoon}</span>
-        </div>
-      )
-    } else if (item.type === 'image') {
-      content = <img src={item.url} alt={caption || 'Class photo'} loading="lazy" />
-    } else {
-      const video = getVideoSource(item.url)
-      content =
-        video.kind === 'file' ? (
-          <video src={video.src} controls preload="metadata" />
-        ) : (
-          <iframe
-            src={video.src}
-            title={caption || 'Class video'}
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        )
-    }
-    return (
-      <figure key={item.id} className={`class-media-item ${item.type}`}>
-        <div className="media-frame">{content}</div>
-        {caption && <figcaption>{caption}</figcaption>}
-      </figure>
-    )
-  }
+  const changeTab = (tab: Tab) => {
+    playClickSound();
+    setActiveTab(tab);
+  };
 
   return (
     <div className="nerdrum-theme">
 
-      {/* ÁUDIO GLOBAL: Carrega e tenta tocar em loop infinito */}
       <audio 
         ref={audioRef} 
         src={AUDIO_SRC} 
@@ -313,7 +394,7 @@ function App() {
 
       {!hasEntered ? (
         <>
-          <div className="bg-slider-container">
+          <div className="bg-slider-container" ref={bgContainerRef}>
             {BACKGROUND_IMAGES.map((img, index) => (
               <div
                 key={index}
@@ -325,7 +406,7 @@ function App() {
           </div>
 
           <section className="landing-hero fade-in">
-            <button className="lang-toggle-hero glow-effect" onClick={toggleLanguage}>
+            <button className="lang-toggle-hero glow-effect" onClick={toggleLanguage} aria-label="Alterar Idioma">
               {lang === 'en' ? 'PT-BR' : 'EN-US'}
             </button>
 
@@ -341,15 +422,13 @@ function App() {
         </>
       ) : (
         <div className="site-wrapper fade-in">
-          <header className={`site-header ${isScrolled ? 'scrolled' : ''}`}>
+          <header className={`site-header ${isScrolled ? 'scrolled' : ''} ${isHeaderHidden ? 'header-hidden' : ''}`}>
             <div className="header-container">
 
-              {/* BARRA SUPERIOR: PLAYER NA ESQUERDA, IDIOMA NA DIREITA */}
               <div className="header-top-actions header-collapsible">
-                
                 <div className="mini-player">
                   <div className="player-controls">
-                    <button onClick={togglePlayAudio} aria-label="Tocar Música">
+                    <button onClick={togglePlayAudio} aria-label={isPlaying ? "Pausar Música" : "Tocar Música"}>
                       {isPlaying ? <PauseIcon /> : <PlayIcon />}
                     </button>
                   </div>
@@ -370,28 +449,28 @@ function App() {
                       value={volume} 
                       onChange={(e) => setVolume(parseFloat(e.target.value))} 
                       className="volume-slider" 
+                      aria-label="Volume da Música"
                     />
                   </div>
                 </div>
 
-                <button className="lang-toggle" onClick={toggleLanguage}>
+                <button className="lang-toggle" onClick={toggleLanguage} aria-label="Mudar Idioma">
                   {lang === 'en' ? 'Mudar para Português (PT)' : 'Switch to English (EN)'}
                 </button>
-
               </div>
 
-              <div className="brand" onClick={() => setHasEntered(false)}>
+              <div className="brand" onClick={() => { playClickSound(); setHasEntered(false); }}>
                 <span className="subtitle header-collapsible">{t.subtitle}</span>
                 <h1 className="artist-title">Nikolas de Murtas</h1>
                 <span className="instagram-handle header-collapsible">@nikolasdemurtas</span>
               </div>
               
-              <nav className="nav-menu">
-                <button className={activeTab === 'works' ? 'active' : ''} onClick={() => setActiveTab('works')}>{t.navWorks}</button>
-                <button className={activeTab === 'bio' ? 'active' : ''} onClick={() => setActiveTab('bio')}>{t.navBio}</button>
-                <button className={activeTab === 'catalog' ? 'active' : ''} onClick={() => setActiveTab('catalog')}>{t.navCatalog}</button>
-                <button className={activeTab === 'classes' ? 'active' : ''} onClick={() => setActiveTab('classes')}>{t.navClasses}</button>
-                <button className={activeTab === 'contact' ? 'active' : ''} onClick={() => setActiveTab('contact')}>{t.navContact}</button>
+              <nav className="nav-menu" role="navigation">
+                <button className={activeTab === 'works' ? 'active' : ''} onClick={() => changeTab('works')}>{t.navWorks}</button>
+                <button className={activeTab === 'bio' ? 'active' : ''} onClick={() => changeTab('bio')}>{t.navBio}</button>
+                <button className={activeTab === 'catalog' ? 'active' : ''} onClick={() => changeTab('catalog')}>{t.navCatalog}</button>
+                <button className={activeTab === 'classes' ? 'active' : ''} onClick={() => changeTab('classes')}>{t.navClasses}</button>
+                <button className={activeTab === 'contact' ? 'active' : ''} onClick={() => changeTab('contact')}>{t.navContact}</button>
               </nav>
 
             </div>
@@ -404,11 +483,47 @@ function App() {
                   <h2>{t.worksTitle}</h2>
                   <p className="section-sub">{t.worksSub}</p>
                 </div>
+
+                <div className="gallery-controls">
+                  <div className="filter-group">
+                    <button 
+                      className={`filter-btn ${selectedYear === 'all' ? 'active' : ''}`}
+                      onClick={() => { playClickSound(); setSelectedYear('all'); }}
+                    >
+                      {t.filterAll}
+                    </button>
+                    <button 
+                      className={`filter-btn ${selectedYear === '2025' ? 'active' : ''}`}
+                      onClick={() => { playClickSound(); setSelectedYear('2025'); }}
+                    >
+                      2025
+                    </button>
+                    <button 
+                      className={`filter-btn ${selectedYear === '2024' ? 'active' : ''}`}
+                      onClick={() => { playClickSound(); setSelectedYear('2024'); }}
+                    >
+                      2024
+                    </button>
+                  </div>
+
+                  <div className="sort-group">
+                    <select 
+                      className="sort-select"
+                      value={sortOrder}
+                      onChange={(e) => { playClickSound(); setSortOrder(e.target.value as 'newest' | 'oldest'); }}
+                      aria-label="Ordenar Obras"
+                    >
+                      <option value="newest">{t.sortNewest}</option>
+                      <option value="oldest">{t.sortOldest}</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div className="gallery-grid">
-                  {CATALOG_WORKS.map((work) => (
-                    <article key={work.id} className="work-card" onClick={() => setSelectedWork(work)}>
+                  {filteredWorks.map((work) => (
+                    <article key={work.id} className="work-card" onClick={() => { playClickSound(); setSelectedWorkId(work.id); }}>
                       <div className="image-wrapper">
-                        <img src={work.imageUrl} alt={work.title} loading="lazy" />
+                        <LazyImage src={work.imageUrl} alt={work.title} />
                       </div>
                       <div className="work-details">
                         <h3>{work.title}</h3>
@@ -425,8 +540,8 @@ function App() {
               <section className="bio-section slide-up">
                 <div className="content-container">
                   <h2>{t.bioTitle}</h2>
-                  <div className="text-content">
-                    <p><strong>Nikolas de Murtas</strong>, {t.bioP1.replace('Nikolas de Murtas, ', '')}</p>
+                  <div className="text-content bio-paragraphs">
+                    <p>{t.bioP1}</p>
                     <p>{t.bioP2}</p>
                     <p>{t.bioP3}</p>
                     <p>{t.bioP4}</p>
@@ -442,7 +557,7 @@ function App() {
                   <p className="catalog-desc">{t.catDesc}</p>
 
                   <div className="catalog-actions justify-center">
-                    <a href={pdfCatalogPath} target="_blank" rel="noopener noreferrer" className="pdf-btn">
+                    <a href={pdfCatalogPath} target="_blank" rel="noopener noreferrer" className="pdf-btn" onClick={() => playClickSound()}>
                       {t.catOpen}
                     </a>
                   </div>
@@ -458,24 +573,37 @@ function App() {
               <section className="classes-section slide-up">
                 <div className="content-container text-center">
                   <h2>{t.classesTitle}</h2>
-                  <p className="classes-main-desc">{t.classesDesc}</p>
+
+                  <div className="classes-course-content">
+                    <div className="course-module">
+                      <h3>{t.classesDrawingTitle}</h3>
+                      <ul>
+                        <li>{t.classesDrawingItem1}</li>
+                        <li>{t.classesDrawingItem2}</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="course-module">
+                      <h3>{t.classesPaintingTitle}</h3>
+                      <ul>
+                        <li>{t.classesPaintingItem1}</li>
+                        <li>{t.classesPaintingItem2}</li>
+                      </ul>
+                    </div>
+                  </div>
 
                   <div className="classes-info-box">
                     <p className="highlight-text">📍 {t.classesLoc}</p>
                     <p className="highlight-text">🗓️ {t.classesDays}</p>
                   </div>
 
-                  <div className="class-media-grid">
-                    {CLASS_MEDIA.map(renderClassMedia)}
-                  </div>
-
                   <p className="classes-cta">{t.classesCTA}</p>
                   <div className="catalog-actions justify-center">
-                    <a href="https://wa.me/5521982910593" target="_blank" rel="noreferrer" className="pdf-btn">
+                    <a href="https://wa.me/5521982910593" target="_blank" rel="noreferrer" className="pdf-btn" onClick={() => playClickSound()}>
                       <span className="btn-icon"><WhatsAppIcon /></span>
                       WhatsApp: (21) 98291-0593
                     </a>
-                    <a href="mailto:nikolasdemurtas@gmail.com" className="pdf-btn secondary">
+                    <a href="mailto:nikolasdemurtas@gmail.com" className="pdf-btn secondary" onClick={() => playClickSound()}>
                       <span className="btn-icon"><MailIcon /></span>
                       nikolasdemurtas@gmail.com
                     </a>
@@ -491,19 +619,19 @@ function App() {
                   <p>{t.contactDesc}</p>
 
                   <div className="contact-list">
-                    <a className="contact-card" href="https://wa.me/5521982910593" target="_blank" rel="noreferrer">
+                    <a className="contact-card" href="https://wa.me/5521982910593" target="_blank" rel="noreferrer" onClick={() => playClickSound()}>
                       <span className="contact-icon"><WhatsAppIcon /></span>
                       <span className="contact-label">WhatsApp</span>
                       <span className="contact-value">+55 (21) 98291-0593</span>
                     </a>
 
-                    <a className="contact-card" href="mailto:nikolasdemurtas@gmail.com">
+                    <a className="contact-card" href="mailto:nikolasdemurtas@gmail.com" onClick={() => playClickSound()}>
                       <span className="contact-icon"><MailIcon /></span>
                       <span className="contact-label">Email</span>
                       <span className="contact-value">nikolasdemurtas@gmail.com</span>
                     </a>
 
-                    <a className="contact-card" href="https://instagram.com/nikolasdemurtas" target="_blank" rel="noreferrer">
+                    <a className="contact-card" href="https://instagram.com/nikolasdemurtas" target="_blank" rel="noreferrer" onClick={() => playClickSound()}>
                       <span className="contact-icon"><InstagramIcon /></span>
                       <span className="contact-label">Instagram</span>
                       <span className="contact-value">@nikolasdemurtas</span>
@@ -514,11 +642,19 @@ function App() {
             )}
           </main>
 
-          {/* MODAL ARTZOOM */}
           {selectedWork && (
-            <div className="modal-overlay" onClick={handleCloseModal}>
-              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <button className="close-btn" onClick={handleCloseModal}>✕</button>
+            <div className="modal-overlay" onClick={handleCloseModal} role="dialog" aria-modal="true">
+              <div 
+                className="modal-content" 
+                onClick={(e) => e.stopPropagation()}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
+                <button className="close-btn" onClick={handleCloseModal} aria-label="Fechar Modal">✕</button>
+
+                <button className="modal-nav-btn modal-prev" onClick={(e) => { e.stopPropagation(); handlePrevWork(); }} aria-label="Obra Anterior">‹</button>
+                <button className="modal-nav-btn modal-next" onClick={(e) => { e.stopPropagation(); handleNextWork(); }} aria-label="Próxima Obra">›</button>
 
                 <div
                   className={`art-zoom-container ${isZoomed ? 'zoomed' : ''}`}
@@ -531,7 +667,7 @@ function App() {
                     alt={selectedWork.title}
                     className="art-zoom-img"
                   />
-                  {!isZoomed && <div className="zoom-hint">🔍 Zoom </div>}
+                  {!isZoomed && <div className="zoom-hint">🔍 Zoom / ↔️ Swipe / ⌨️ Setas</div>}
                 </div>
 
                 <div className="modal-info">
@@ -545,7 +681,6 @@ function App() {
         </div>
       )}
 
-      {/* RODAPÉ ÚNICO */}
       <footer className={`site-footer ${!hasEntered ? 'on-landing' : ''}`}>
         <div className="footer-container">
           <p className="footer-copy">© {new Date().getFullYear()} Nikolas de Murtas. {t.rights}</p>
